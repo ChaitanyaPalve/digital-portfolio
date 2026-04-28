@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chaitanya Palve | Student Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 215, 120, 0.12), transparent 20%),
+        radial-gradient(circle at 90% 20%, rgba(120, 80, 255, 0.10), transparent 22%),
+        radial-gradient(circle at 50% 90%, rgba(40, 180, 130, 0.08), transparent 28%),
+        linear-gradient(135deg, #080504, #17100d 42%, #050304);
+      color: #f5e6c8;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(212,175,55,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,.04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      z-index: -5;
+      animation: gridMove 18s linear infinite;
+    }
+
+    @keyframes gridMove { from { background-position: 0 0; } to { background-position: 84px 84px; } }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, transparent 55%, rgba(0,0,0,.55));
+      z-index: -4;
+      pointer-events: none;
+    }
+
+    .stars, .runes, .candles-layer { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+    .stars { z-index: -3; }
+    .runes { z-index: -2; }
+    .candles-layer { z-index: 2; }
+
+    .star {
+      position: absolute; width: 3px; height: 3px; background: #f8e7b5; border-radius: 50%;
+      box-shadow: 0 0 8px #f8e7b5;
+      animation: twinkle 2.5s infinite alternate, drift 18s linear infinite; opacity: .8;
+    }
+    @keyframes twinkle { from { transform: scale(.8); opacity: .35; } to { transform: scale(1.5); opacity: 1; } }
+    @keyframes drift { from { translate: 0 0; } to { translate: 0 -140px; } }
+
+    .rune {
+      position: absolute;
+      color: rgba(212,175,55,.15);
+      font-size: 1.4rem;
+      animation: runeFloat 12s linear infinite;
+      text-shadow: 0 0 18px rgba(212,175,55,.2);
+    }
+    @keyframes runeFloat {
+      0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      18% { opacity: .75; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+
+    .candle {
+      position: absolute; width: 14px; height: 52px;
+      background: linear-gradient(to bottom, #f2e3b8, #dbc69c);
+      border-radius: 4px; box-shadow: 0 0 12px rgba(255,230,170,.15);
+      animation: floatCandle 6s ease-in-out infinite;
+    }
+    .candle::before {
+      content: ""; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+      width: 10px; height: 16px;
+      background: radial-gradient(circle, #ffd36b 0%, #ff9f1c 60%, transparent 75%);
+      border-radius: 50%; animation: flicker .2s infinite alternate;
+      box-shadow: 0 0 22px rgba(255,183,77,.95);
+    }
+    .candle::after { content:""; position:absolute; top:-4px; left:50%; transform:translateX(-50%); width:2px; height:6px; background:#2c1a0a; }
+    @keyframes flicker { from { transform: translateX(-50%) scale(1) rotate(-2deg); } to { transform: translateX(-50%) scale(1.1) rotate(2deg); } }
+    @keyframes floatCandle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+
+    .magic-cursor, .magic-dot { position: fixed; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; }
+    .magic-cursor {
+      width: 20px; height: 20px; border: 2px solid rgba(255,222,173,.95); border-radius: 50%;
+      box-shadow: 0 0 14px rgba(255,215,140,.7); background: radial-gradient(circle, rgba(255,232,190,.35), transparent 65%);
+      transition: transform .06s linear;
+    }
+    .magic-dot { width: 6px; height: 6px; background: #ffd27a; border-radius: 50%; box-shadow: 0 0 12px #ffd27a; }
+    .trail { position: fixed; width: 8px; height: 8px; border-radius: 50%; background: rgba(255,221,160,.85); pointer-events: none; z-index: 9998; box-shadow: 0 0 12px rgba(255,221,160,.7); animation: fadeTrail .8s linear forwards; }
+    @keyframes fadeTrail { from { opacity: 1; transform: translate(-50%, -50%) scale(1); } to { opacity: 0; transform: translate(-50%, -50%) scale(.2); } }
+
+    nav {
+      position: sticky; top: 0; z-index: 1000; background: rgba(18,13,10,.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212,175,55,.25); padding: 14px 6%; display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,.22);
+    }
+    .logo { font-size: 1.35rem; color: #d4af37; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 12px rgba(212,175,55,.35); }
+    nav ul { list-style: none; display: flex; gap: 22px; flex-wrap: wrap; }
+    nav a { text-decoration: none; color: #f5e6c8; transition: .3s ease; font-size: .96rem; }
+    nav a:hover { color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,.5); }
+
+    section { padding: 80px 6%; position: relative; z-index: 3; }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero-box, .card, .ask-box {
+      background: rgba(34,24,18,.78); border: 1px solid rgba(212,175,55,.24); border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.32), 0 0 35px rgba(212,175,55,.08); position: relative; overflow: hidden;
+    }
+    .hero-box { max-width: 970px; padding: 56px 38px; }
+    .hero-box::before, .card::before, .ask-box::before {
+      content:""; position:absolute; inset:0; background: linear-gradient(120deg, transparent, rgba(255,230,170,.09), transparent);
+      transform: translateX(-100%); animation: shine 7s linear infinite;
+    }
+    @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    .hero h1 { font-size: 3.65rem; color: #d4af37; margin-bottom: 12px; text-shadow: 0 0 15px rgba(212,175,55,.32); }
+    .hero h2 { font-size: 1.2rem; margin-bottom: 18px; font-weight: normal; }
+    .hero p { font-size: 1.08rem; color: #e7d8b2; max-width: 740px; margin: 0 auto 24px; }
+    .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+    .btn, .project-btn, .ask-form button {
+      text-decoration: none; padding: 12px 24px; border-radius: 999px; border: 1px solid #d4af37; color: #120d0a;
+      background: linear-gradient(135deg, #f6d46b, #d4af37); transition: .35s ease; font-weight: bold; box-shadow: 0 0 16px rgba(212,175,55,.16);
+    }
+    .btn:hover, .project-btn:hover, .ask-form button:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 24px rgba(212,175,55,.45); }
+
+    .section-title { text-align: center; font-size: 2.35rem; margin-bottom: 14px; color: #d4af37; text-shadow: 0 0 10px rgba(212,175,55,.24); }
+    .section-subtitle { text-align: center; max-width: 780px; margin: 0 auto 40px; color: #e7d8b2; font-size: 1rem; }
+    .about-grid, .skills-grid, .projects-grid { display: grid; gap: 24px; }
+    .about-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .skills-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .projects-grid { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+    .card { padding: 28px 22px; transition: .35s ease; }
+    .card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(212,175,55,.55); box-shadow: 0 22px 42px rgba(0,0,0,.36), 0 0 30px rgba(212,175,55,.16); }
+    .card h3 { color: #d4af37; margin-bottom: 10px; font-size: 1.3rem; }
+    .card p, .contact p { color: #ecdcb7; font-size: .98rem; }
+    .skill-item { text-align: center; font-size: 1.02rem; font-weight: bold; letter-spacing: .5px; }
+    .skill-item span { display:block; margin-top:8px; font-size:.88rem; color:#e7d8b2; font-weight:normal; }
+    .project-tag { display:inline-block; margin: 12px 0; padding:6px 12px; border-radius:999px; background:rgba(212,175,55,.14); color:#f5e6c8; font-size:.85rem; border:1px solid rgba(212,175,55,.22); }
+    .project-btn { display:inline-block; margin-top: 12px; }
+
+    .ask-section { text-align: center; }
+    .ask-box { max-width: 760px; margin: 30px auto 0; padding: 30px; }
+    .ask-form { display: grid; gap: 16px; position: relative; z-index: 2; }
+    .ask-form label { text-align: left; color: #d4af37; font-weight: bold; }
+    .ask-form textarea, .ask-form input {
+      width: 100%; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(212,175,55,.32);
+      background: rgba(10,7,5,.72); color: #f5e6c8; outline: none; font-family: inherit; font-size: 1rem;
+      box-shadow: inset 0 0 15px rgba(212,175,55,.05);
+    }
+    .ask-form textarea { min-height: 125px; resize: vertical; }
+    .ask-form textarea:focus, .ask-form input:focus { border-color: #d4af37; box-shadow: 0 0 18px rgba(212,175,55,.18); }
+    #formStatus { min-height: 28px; color: #f6d46b; font-weight: bold; }
+
+    .contact { text-align: center; }
+    .contact p { font-size: 1.05rem; margin: 10px 0; }
+    footer { text-align: center; padding: 22px; border-top: 1px solid rgba(212,175,55,.15); color: #c8b892; background: rgba(10,7,5,.85); font-size: .94rem; position: relative; z-index: 3; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      nav { flex-direction: column; gap: 10px; }
+      nav ul { justify-content: center; }
+      * { cursor: auto; }
+      .magic-cursor, .magic-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="runes" id="runes"></div>
+  <div class="candles-layer">
+    <div class="candle" style="top: 90px; left: 8%; animation-delay: 0s;"></div>
+    <div class="candle" style="top: 150px; left: 22%; animation-delay: 1s;"></div>
+    <div class="candle" style="top: 110px; left: 40%; animation-delay: 2s;"></div>
+    <div class="candle" style="top: 170px; left: 58%; animation-delay: .5s;"></div>
+    <div class="candle" style="top: 95px; left: 76%; animation-delay: 1.5s;"></div>
+    <div class="candle" style="top: 145px; left: 90%; animation-delay: 2.2s;"></div>
+  </div>
+
+  <div class="magic-cursor" id="magicCursor"></div>
+  <div class="magic-dot" id="magicDot"></div>
+
+  <nav>
+    <div class="logo">⚡ Student Portfolio</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Learning</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#ask">Ask Me</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-box">
+      <h1>Chaitanya Palve</h1>
+      <h2>FY-IT Student at MITAOE</h2>
+      <p>
+        Welcome to my moving, vintage, magic-inspired student portfolio. This page shows what I am learning,
+        what I am trying to build, and the creative projects I am developing step by step.
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn">Explore My Projects</a>
+        <a href="#ask" class="btn">Ask Me Something</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">The Student Behind the Portfolio</h2>
+    <p class="section-subtitle">My journey is just beginning, but every great project starts with one creative idea.</p>
+    <div class="about-grid">
+      <div class="card">
+        <h3>What I Am Learning</h3>
+        <p>
+          I am currently learning programming, databases, web development, data visualization, and practical tools
+          step by step so I can build useful real-world projects.
+        </p>
+      </div>
+      <div class="card">
+        <h3>My Goal</h3>
+        <p>
+          To improve the way of living and always keep trying something new, trying to be creative, and trying to be intelligent.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title">Subjects of Study</h2>
+    <p class="section-subtitle">These are the fields and tools I am currently learning before stepping into bigger projects.</p>
+    <div class="skills-grid">
+      <div class="card skill-item">Python<span>Core logic and programming basics</span></div>
+      <div class="card skill-item">HTML<span>Page structure and content</span></div>
+      <div class="card skill-item">CSS<span>Styling and visual design</span></div>
+      <div class="card skill-item">JavaScript<span>Interaction and dynamic effects</span></div>
+      <div class="card skill-item">C<span>Programming fundamentals</span></div>
+      <div class="card skill-item">Firebase<span>Cloud database and project storage</span></div>
+      <div class="card skill-item">MySQL<span>Relational database handling</span></div>
+      <div class="card skill-item">SQL<span>Queries and data operations</span></div>
+      <div class="card skill-item">Tableau<span>Dashboards and visualization</span></div>
+      <div class="card skill-item">Orange<span>Visual data mining basics</span></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="section-title">Interactive Project Chamber</h2>
+    <p class="section-subtitle">Only my active projects are shown here. Each card redirects directly to its respective web page.</p>
+    <div class="projects-grid">
+      <div class="card">
+        <h3>Image to URL</h3>
+        <p>
+          This project allows a user to upload an image and convert it into a shareable image URL. It demonstrates
+          upload handling, practical web utility, and backend-style workflow.
+        </p>
+        <div class="project-tag">Project 01 · Upload Tool</div><br>
+        <a href="https://imageurl-sage.vercel.app/" class="project-btn" target="_blank">Open Image to URL</a>
+      </div>
+
+      <div class="card">
+        <h3>Digital Legacy Locker</h3>
+        <p>
+          This project is a secure digital locker concept where important information can be stored and managed.
+          It demonstrates form handling, Firebase usage, and real-life problem-solving through a web app.
+        </p>
+        <div class="project-tag">Project 02 · Firebase App</div><br>
+        <a href="https://bhaveshbaviskar-it.github.io/Digital-Lagacy-1/" class="project-btn" target="_blank">Open Digital Legacy Locker</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="ask" class="ask-section">
+    <h2 class="section-title">Ask Me Something</h2>
+    <p class="section-subtitle">
+      Ask a question and add your contact number or email. The response will be saved in Firebase to show that I can handle Firebase data storage.
+    </p>
+    <div class="ask-box">
+      <form class="ask-form" id="askForm">
+        <label for="questionInput">Your Question</label>
+        <textarea id="questionInput" placeholder="Type your question here..." required></textarea>
+
+        <label for="replyInput">Where I Can Reply You — Contact No / Email</label>
+        <input id="replyInput" type="text" placeholder="Enter mobile number or email..." required />
+
+        <button type="submit">Send Question to Firebase</button>
+        <p id="formStatus"></p>
+      </form>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2 class="section-title">Contact Scroll</h2>
+    <p><strong>Name:</strong> Chaitanya Palve</p>
+    <p><strong>Course:</strong> FY-IT at MITAOE</p>
+    <p><strong>Message:</strong> Thank you for visiting my student portfolio.</p>
+  </section>
+
+  <footer>© 2026 Chaitanya Palve | nitwit blubber oddment tweak ⚡</footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+    // Paste your Firebase config here before hosting.
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_API_KEY",
+      authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+      projectId: "PASTE_YOUR_PROJECT_ID",
+      storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+      appId: "PASTE_YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const askForm = document.getElementById("askForm");
+    const questionInput = document.getElementById("questionInput");
+    const replyInput = document.getElementById("replyInput");
+    const formStatus = document.getElementById("formStatus");
+
+    askForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      formStatus.textContent = "Saving your question...";
+
+      try {
+        await addDoc(collection(db, "portfolioQuestions"), {
+          question: questionInput.value.trim(),
+          replyContact: replyInput.value.trim(),
+          createdAt: serverTimestamp()
+        });
+
+        formStatus.textContent = "Question saved successfully in Firebase!";
+        askForm.reset();
+      } catch (error) {
+        console.error(error);
+        formStatus.textContent = "Firebase save failed. Check your Firebase config and Firestore rules.";
+      }
+    });
+
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 95; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.animationDuration = (2 + Math.random() * 4) + "s, " + (12 + Math.random() * 12) + "s";
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+
+    const runesContainer = document.getElementById("runes");
+    const runeSymbols = ["✦", "✧", "☽", "⚡", "✺", "✶", "✷", "✹"];
+    for (let i = 0; i < 28; i++) {
+      const rune = document.createElement("div");
+      rune.className = "rune";
+      rune.textContent = runeSymbols[Math.floor(Math.random() * runeSymbols.length)];
+      rune.style.left = Math.random() * 100 + "%";
+      rune.style.animationDuration = (9 + Math.random() * 12) + "s";
+      rune.style.animationDelay = Math.random() * 10 + "s";
+      rune.style.fontSize = (1 + Math.random() * 1.8) + "rem";
+      runesContainer.appendChild(rune);
+    }
+
+    const cursor = document.getElementById("magicCursor");
+    const dot = document.getElementById("magicDot");
+
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      cursor.style.left = x + "px";
+      cursor.style.top = y + "px";
+      dot.style.left = x + "px";
+      dot.style.top = y + "px";
+
+      const trail = document.createElement("div");
+      trail.className = "trail";
+      trail.style.left = x + "px";
+      trail.style.top = y + "px";
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 800);
+    });
+
+    document.querySelectorAll("a, button, .card, input, textarea").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        cursor.style.transform = "translate(-50%, -50%) scale(1.7)";
+        cursor.style.boxShadow = "0 0 22px rgba(255, 215, 140, .95)";
+      });
+      el.addEventListener("mouseleave", () => {
+        cursor.style.transform = "translate(-50%, -50%) scale(1)";
+        cursor.style.boxShadow = "0 0 14px rgba(255, 215, 140, .7)";
+      });
+    });
+  </script>
+</body>
+</html>
